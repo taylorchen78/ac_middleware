@@ -5,14 +5,25 @@ const port = 3000
 
 app.use((req, res, next) => {
   //Q1
-  const date = new Date(Date.now())
-  const currentTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' +
-    date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
-  const Q1 = currentTime + ' | ' + req.method + ' from ' + req.originalUrl
+  const reqTime = new Date(Date.now())
+  const reqTimeFromat = reqTime.getFullYear() + '-' + (reqTime.getMonth() + 1) + '-' + reqTime.getDate() + ' ' + reqTime.getHours() + ':' + reqTime.getMinutes() + ':' + reqTime.getSeconds()
+
+  const Q1 = reqTimeFromat + ' | ' + req.method + ' from ' + req.originalUrl
 
   console.log(Q1)
 
   next()
+
+  //Q2
+  res.on('finish', () => {
+    const resTime = new Date(Date.now())
+    const period = resTime - reqTime
+    const resTimeFromat = resTime.getFullYear() + '-' + (resTime.getMonth() + 1) + '-' + resTime.getDate() + ' ' + resTime.getHours() + ':' + resTime.getMinutes() + ':' + resTime.getSeconds()
+
+    const Q2 = resTimeFromat + ' | ' + req.method + ' from ' + req.originalUrl + ' | total time: ' + period + 'ms'
+
+    console.log(Q2)
+  })
 })
 
 app.get('/', (req, res) => {
