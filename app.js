@@ -3,6 +3,18 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+app.use((req, res, next) => {
+  //Q1
+  const date = new Date(Date.now())
+  const currentTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' +
+    date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+  const Q1 = currentTime + ' | ' + req.method + ' from ' + req.originalUrl
+
+  console.log(Q1)
+
+  next()
+})
+
 app.get('/', (req, res) => {
   res.send('列出全部 Todo')
 })
